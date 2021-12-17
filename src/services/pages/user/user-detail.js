@@ -1,4 +1,4 @@
-import { mapGetters } from "vuex";
+//import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -9,7 +9,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["userId"]),
+    //...mapGetters(["userId"]),
     currentUser() {
       return this.$store.getters.userId;
     }
@@ -69,5 +69,9 @@ export default {
         }
       }
     },
+    editUser(user) {
+      var id = user.id;
+      this.$router.push({ name: "user-edit", params: { user: user, id } });
+    }
   }
 }

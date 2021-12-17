@@ -5,7 +5,7 @@
       <v-spacer></v-spacer>
     </v-card-title>
     <v-container>
-      <v-form ref="form" @submit.prevent="updatePost(updatedTitle, updatedDesc)" style="width: 800px">
+      <v-form ref="form" v-model="valid" @submit.prevent="updatePost(updatedTitle, updatedDesc)" style="width: 800px">
        <v-col
           cols="12"
           sm="8"
@@ -14,6 +14,8 @@
         <v-text-field
           v-model="updatedTitle"
           label="Title"
+          :rules="titleRules"
+          required
           outlined
         ></v-text-field>
         </v-col>
@@ -23,6 +25,8 @@
         <v-textarea
           v-model="updatedDesc"
           label="Description"
+          :rules="titleRules"
+          required
           outlined
         ></v-textarea>
         </v-col>
@@ -35,33 +39,10 @@
           <v-btn
             color="primary"
             type="submit"
+            :disabled="!valid"
           >UPDATE</v-btn>
         </v-card-actions>
       </v-form>
-      <v-dialog
-        v-model="updateDialog"
-        width="500"
-        @click:outside="$router.push({name: 'post-list'})"
-      >
-        <v-card>
-        <v-card-title class="text-h5 pb-6">
-          Successfully Edited Post.
-        </v-card-title>
-        <v-card-text class="px-6">
-          Post has been edited successfully.
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="primary"
-            text
-            @click="$router.push({name: 'post-list'})"
-          >
-            Okay
-          </v-btn>
-        </v-card-actions>
-        </v-card>
-      </v-dialog>
     </v-container>
   </v-card>
 </template>

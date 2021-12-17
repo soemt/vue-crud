@@ -233,6 +233,7 @@ Feature: mock server for bulletinboard
                                 if(request.phone) userList[index].phone = request.phone;
                                 if(request.address) userList[index].address = request.address;
                                 if(request.dob) userList[index].dob = request.dob;
+                                if(request.profile_path) userList[index].profile_path = request.profile_path;
                                 userList[index].updated_user_id = updatedUser.id;
                                 updated = true;
                                 break;

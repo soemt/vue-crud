@@ -73,23 +73,26 @@ export default {
     deleteUser(userId, userName) {
       if (confirm("Do you want to delete the user '" + userName + "' ?")) {
         this.$axios.delete("/delete/user/" + userId)
-          .then(() => {
-            if (userId == this.$store.getters.userId) {
-              alert("This user is currently logged in, you will be logged out");
-              this.$root.$refs.layout.logout();
-            } else {
-              this.getListData();
-              console.log("not logout");
-            }
-          
+        .then(() => {
+          if (userId == this.$store.getters.userId) {
+            alert("This user is currently logged in, you will be logged out");
+            this.$root.$refs.layout.logout();
+          } else {
+            this.getListData();
+            console.log("not logout");
+          }
         });
         alert("Deleted user" , userId);
       }
     },
     searchUser(search) {
       this.showList = this.userList.filter(user => {
-        return (user.name).toLowerCase().includes(search.toLowerCase());
+        return (user.name).toLowerCase().includes(search.toLowerCase()) && !user.deleted_user_id;
       })
     },
+    editUser(item) {
+      var id = item.id;
+      this.$router.push({ name: "user-edit", params: { user: item, id } });
+    }
   },
 };

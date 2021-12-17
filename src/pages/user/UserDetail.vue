@@ -6,12 +6,13 @@
     <v-container class="d-flex">
       <div class="user-control d-flex flex-column">
         <img class="profile-pic mb-4" :src="getProfilePic()">
-        <v-btn
+        <v-btn 
           color="primary"
           elevation="2"
           plain
           class="mb-2"
-          @click="$router.push({name: 'user-edit', params: {userId}})"
+          v-for="user in userDetail" :key="user.id"
+          @click="editUser(user)"
         > Edit Profile
         </v-btn>
         <v-btn

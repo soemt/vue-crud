@@ -7,32 +7,68 @@
     <v-container class="d-flex">
       <div class="user-control d-flex flex-column">
         <img class="profile-pic mb-4" :src="getProfilePic()">
+        <input type="file" name="file-browse-btn" id="file-browse-btn" class="file-upload" accept="image/*" @change="onFileChange"/>
+        <label for="file-browse-btn">
+          <span>Edit Profile Pic</span>
+        </label>
         <v-btn
           class="mt-8"
           outlined
           color="error"
-          @click="$router.go(-1)"
+          @click="$router.push({name: 'user-list'})"
         >Cancel Editing
         </v-btn>
       </div>
-      <v-form ref="form" class="user-detail ml-8 d-flex flex-column" @submit.prevent="updateUser(updatedName, updatedPhone, updatedAddress, date)">
-        <v-text-field
-          v-model="updatedName"
-          label="Name"
-          outlined
-          dense
-        ></v-text-field>
-        <v-text-field
-          v-model="updatedPhone"
-          label="Phone"
-          outlined
-          dense
-        ></v-text-field>
-        <v-textarea
-          v-model="updatedAddress"
-          label="Address"
-          outlined
-        ></v-textarea>
+      <validation-observer
+        ref="observer"
+        v-slot="{ invalid }"
+      >
+        <v-form ref="form" class="user-detail ml-8 d-flex flex-column" @submit.prevent="updateUser(updatedName, updatedPhone, updatedAddress, date)">
+        <validation-provider
+          v-slot="{ errors }"
+          name="Name"
+          rules="required|max:50"
+        >
+          <v-text-field
+            v-model="updatedName"
+            label="Name"
+            :error-messages="errors"
+            required
+            outlined
+            dense
+          ></v-text-field>
+        </validation-provider>
+        <validation-provider
+          v-slot="{ errors }"
+          name="Phone Number"
+          :rules="{
+            required: true,
+            digits: 11,
+          }"
+        >
+          <v-text-field
+            v-model="updatedPhone"
+            :counter="11"
+            :error-messages="errors"
+            label="Phone"
+            required
+            outlined
+            dense
+          ></v-text-field>
+        </validation-provider>
+        <validation-provider
+          v-slot="{ errors }"
+          name="Address"
+          rules="required"
+        >
+          <v-textarea
+            v-model="updatedAddress"
+            :error-messages="errors"
+            label="Address"
+            required
+            outlined
+          ></v-textarea>
+        </validation-provider>
         <v-menu
           ref="menu"
           v-model="menu"
@@ -65,34 +101,11 @@
             color="primary"
             type="submit"
             style="width: 100%"
-            
+            :disabled="invalid"
           >Update Profile</v-btn>
         </v-card-actions>
-        <v-dialog
-          v-model="updateDialog"
-          width="500"
-          @click:outside="$router.push({name: 'user-list'})"
-        >
-          <v-card>
-          <v-card-title class="text-h5 pb-6">
-            Successfully Updated User.
-          </v-card-title>
-          <v-card-text class="px-6">
-            User has been updated successfully.
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn
-              color="primary"
-              text
-              @click="$router.push({name: 'user-list'})"
-            >
-              Okay
-            </v-btn>
-          </v-card-actions>
-          </v-card>
-        </v-dialog>
       </v-form>
+      </validation-observer>
     </v-container>
   </v-card>
 </template>

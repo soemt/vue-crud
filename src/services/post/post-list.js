@@ -6,7 +6,6 @@ export default {
       postInfo: null,
       dialogTitle: "",
       createDialog: false,
-      submitDialog: false,
       confirmDialog: false,
       headerList: [
         {
@@ -34,10 +33,17 @@ export default {
       postList: [],
       showList: [],
       deleted_user_id: "deleted_user_id",
-      search: " ",
-      newTitle: " ",
-      newDesc: " ",
+      search: "",
+      newTitle: "",
+      newDesc: "",
       post_id: null,
+      valid: true,
+      titleRules: [
+        v => !!v || "Title is required."
+      ],
+      descriptionRules: [
+        v => !!v || "Description is required."
+      ],
     };
   },
   computed: {
@@ -79,15 +85,13 @@ export default {
       });
     },
     createPost(newTitle, newDesc) {
-      this.$axios.post("/create/post", { "title": newTitle, "description": newDesc })
-        .then(() => {
-          this.createDialog = false;
-          this.submitDialog = true;
-          this.getListData();
-        },
-        (error) => {
-          alert(error);
-        });
+      var postdata = {
+          title: newTitle,
+          description: newDesc,
+      }
+      var action = "create";
+      this.$store.commit("postData", postdata);
+      this.$router.push({name: "post-confirm", params: {action}});
     },
     deletePost(postId) {
       this.confirmDialog = true;
@@ -104,8 +108,12 @@ export default {
     },
     searchPost(search) {
       this.showList = this.postList.filter(post => {
-        return (post.title + post.description).toLowerCase().includes(search.toLowerCase());
+        return (post.title + post.description).toLowerCase().includes(search.toLowerCase()) && !post.deleted_user_id;
       })
     },
+    editPost(item) {
+      var id = item.id;
+      this.$router.push({name: 'post-edit', params: {post: item, id}})
+    }
   },
 };

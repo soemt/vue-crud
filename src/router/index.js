@@ -9,6 +9,8 @@ import CreateUser from "../pages/user/CreateUser";
 import UserList from "../pages/user/UserList";
 import UserDetail from "../pages/user/UserDetail";
 import UserEdit from "../pages/user/UserEdit";
+import PostConfirm from "../pages/post/PostConfirm";
+import UserConfirm from "../pages/user/UserConfirm"
 import store from "../store";
 
 Vue.use(VueRouter);
@@ -67,14 +69,31 @@ const routes = [
     props: true,
   },
   {
+    path: "/post-confirmation",
+    name: "post-confirm",
+    component: PostConfirm,
+  },
+  {
+    path: "/user-confirmation",
+    name: "user-confirm",
+    component: UserConfirm,
+  },
+  {
     path: "/*",
     redirect: "/post/list",
   },
 ];
 
-const router = new VueRouter({
+//const PostConfirm = { template: '<div>Home</div>' } 
+export const router = new VueRouter({
   mode: "history",
   routes,
+  //routes: [
+  //  {
+  //    path: "/confirmation",
+  //    component: Confirmation,
+  //  }
+  //]
 });
 
 /**

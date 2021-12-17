@@ -3,10 +3,10 @@
     <v-card-title>
       User list
       <v-spacer></v-spacer>
-      <v-form ref="form" @submit.prevent="searchUser(search)">
+      <v-form ref="form">
         <v-row class="filter-bar">
           <v-col md="2.5">
-            <v-text-field label="Search keyword" hide-details="auto" v-model="search"></v-text-field>
+            <v-text-field label="Search keyword" hide-details="auto" v-model="search" @keyup="searchUser(search)"></v-text-field>
           </v-col>
           <v-btn
             type="submit"
@@ -27,7 +27,7 @@
       </v-form>
     </v-card-title>
     <v-container>
-      <v-data-table :headers="headers" :items="showList">
+      <v-data-table :headers="headers" :items="showList" :items-per-page="35">
         <template v-slot:[`item.name`]="{ item }">
           <a v-if="item.name" v-bind:href="'detail/'+item.id">
             {{item.name}}
@@ -36,7 +36,7 @@
         <template v-slot:[`item.operation`]="{ item }">
           <v-row>
             <div class="operation-btn">
-              <v-btn color="primary" class="post-list-btn" :to="{path: 'edit/' + item.id}">Edit</v-btn>
+              <v-btn color="primary" class="post-list-btn" @click="editUser(item)">Edit</v-btn>
             </div>
             <div class="operation-btn">
               <v-btn color="error" class="post-list-btn" @click="deleteUser(item.id,item.name)">Delete</v-btn>

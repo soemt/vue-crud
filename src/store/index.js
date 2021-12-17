@@ -10,11 +10,19 @@ axios.defaults.baseURL = process.env.VUE_APP_SERVER;
 export default new Vuex.Store({
   state: {
     user: null,
+    postdata: null,
+    userdata: null,
   },
   mutations: {
     setUserData(state, userData) {
       state.user = userData;
     },
+    postData(state, data) {
+      state.postdata = data;
+    },
+    userData(state, data) {
+      state.userdata = data;
+    }
   },
   actions: {
     login({ commit }, credentials) {
@@ -53,7 +61,9 @@ export default new Vuex.Store({
           return false
         }
       }
-    }
+    },
+    postdata: state => state.postdata,
+    userdata: state => state.userdata
   },
   plugins: [createPersistedState()],
 });
